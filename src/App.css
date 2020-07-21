@@ -1,38 +1,104 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400&display=swap');
+:root {
+  --primary-color: royalblue;
+  --secondary-color: white;
+  --accent-color: #FFD966;
+}
+body {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   min-height: 100vh;
+  margin: auto 100px;
+}
+.App-header {
   display: flex;
   flex-direction: column;
+  text-align: center;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  /* color: white; */
 }
 
 .App-link {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn {
+  border-radius: 0.2em;
+  padding: 0.5em;
+  /* background-color: #20232a; */
+  /* color: #61dafb; */
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  text-decoration: none;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+
+ol.file-list {
+  list-style-type: none;
+  margin: 0px;
+  border: solid;
+  min-height: 50vh;
+  padding-right: 40px;
+}
+ol.file-list li {
+  border: solid;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.3em 1em;
+  font-size: x-large;
+  align-items: center;
+}
+
+div.controls {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+div.controls > * {
+  border: solid;
+  border-radius: 3px;
+  padding: 1em 40px;
+  font-weight: 700;
+  
+}
+/* .left-button {
+  padding: 1ch 40px;
+} */
+
+a.btn:hover {
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  border-color: var(--accent-color);
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.chinese {
+  font-family: 'Noto Sans SC', sans-serif;
+  background-color: var(--accent-color);
+  color : var(--primary-color);
+}
+
+.btn {
+  cursor: pointer;
+  margin: auto 0.4ch;
+}
+
+.focus {
+  color: var(--accent-color);
 }
