@@ -127,10 +127,26 @@ a {
 }
 .add-button {
   grid-area: 1 / 1 / 2 / 2;
-  background-color: #4CBB17;
 }
 input[type="file"] {
   display: none;
 }
 
 .merge-button {grid-area: 2 / 1 / 3 / 2;}
+
+.active,.btn {
+  cursor: pointer;
+}
+
+.active {
+  background-color: #4CBB17;
+
+}
+
+.active:hover {
+  box-shadow: inset 10px;
+  filter: brightness(1.3);
+}
+.inactive {
+  cursor: not-allowed;
+}

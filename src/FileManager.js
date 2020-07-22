@@ -103,7 +103,7 @@ export default class FileManager extends React.Component {
         return (
             <div className="workspace">
                     <div className="add-button">
-                        <label className="custom-file-upload">
+                        <label className="custom-file-upload active">
                             <input 
                               className="input-btn"
                               type="file" 
@@ -112,12 +112,12 @@ export default class FileManager extends React.Component {
                             Pick File
                         </label>
                     </div>
-                    {isEmpty ? (<div className="merge-button inactive">Click Here When Done</div>) :
+                    {isEmpty ? (<div className="merge-button inactive">Merge Files</div>) :
                     
                     (<DownloadLink
-                        label="Click Here When Done"
+                        label="Merge Files"
                         filename="merged.pdf"
-                        className="merge-button"
+                        className="merge-button active"
                         exportFile={this.merge}
                         style={{}}
                     />)}
