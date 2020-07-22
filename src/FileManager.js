@@ -2,7 +2,6 @@ import React from 'react';
 import FileList from './FileList'
 import DownloadLink from "react-download-link";
 import { PDFDocument } from 'pdf-lib'
-import { TiArrowDownThick } from 'react-icons/ti';
 
 function range(stop) {
     const arr = new Array(stop);
@@ -102,20 +101,26 @@ export default class FileManager extends React.Component {
     render() {
         let isEmpty = this.state.files.length === 0;
         return (
-            <div>
-                <div className="controls">
-                    <div className={"focus"}>
-                        <TiArrowDownThick/> Click Here To Add File<br/>
-                        <input className="input-btn" type="file" onChange={this.addFile}/>
+            <div className="workspace">
+                    <div className="add-button">
+                        <label className="custom-file-upload">
+                            <input 
+                              className="input-btn"
+                              type="file" 
+                              onChange={this.addFile}
+                            />
+                            Pick File
+                        </label>
                     </div>
-                    <DownloadLink
+                    {isEmpty ? (<div className="merge-button inactive">Click Here When Done</div>) :
+                    
+                    (<DownloadLink
                         label="Click Here When Done"
                         filename="merged.pdf"
-                        className={"btn download-btn" + (isEmpty ? "" : " focus")}
+                        className="merge-button"
                         exportFile={this.merge}
                         style={{}}
-                    />
-                </div>
+                    />)}
                 
                 <FileList 
                     files={this.state.files}
