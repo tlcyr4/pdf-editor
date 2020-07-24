@@ -109,8 +109,8 @@ export default class FileManager extends React.Component {
                 let files = state.files;
                 let pageMasks = state.pageMasks;
                 return {
-                    files: swapped(files, i, clamp(i - 1, 0, files.length)),
-                    pageMasks: swapped(pageMasks, i, clamp(i - 1, 0, files.length))
+                    files: swapped(files, i, clamp(i - 1, 0, files.length - 1)),
+                    pageMasks: swapped(pageMasks, i, clamp(i - 1, 0, files.length - 1))
                 }
             });
         })
@@ -122,8 +122,8 @@ export default class FileManager extends React.Component {
                 let files = state.files;
                 let pageMasks = state.pageMasks;
                 return {
-                    files: swapped(files, i, clamp(i + 1, 0, files.length)),
-                    pageMasks: swapped(pageMasks, i, clamp(i + 1, 0, files.length))
+                    files: swapped(files, i, clamp(i + 1, 0, files.length - 1)),
+                    pageMasks: swapped(pageMasks, i, clamp(i + 1, 0, files.length - 1))
                 }
             });
         })
