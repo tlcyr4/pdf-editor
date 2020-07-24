@@ -72,7 +72,6 @@ export default class FileManager extends React.Component {
         const files = this.state.files;
         const pageMasks = this.state.pageMasks;
         this.setState({files:[],pageMasks:[]});
-        debugger;
         for (let j = 0; j < files.length; j++) {
             let file = files[j];
             let pageMask = pageMasks[j];
@@ -213,6 +212,7 @@ export default class FileManager extends React.Component {
                               className="input-btn"
                               type="file" 
                               onChange={this.addFile}
+                              accept=".pdf"
                             />
                             Pick File
                         </label>
