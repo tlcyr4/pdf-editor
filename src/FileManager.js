@@ -170,11 +170,10 @@ export default class FileManager extends React.Component {
             } else {
                 console.log("deleting whole file");
                 return {
-                    pageMasks : newPageMasks,
                     pageIndex: null,
                     selectedFile: null,
                     files: removed(state.files, state.selectedFile),
-                    pageMasks: removed(state.pageMasks, state.selectedFile)
+                    pageMasks: removed(newPageMasks, state.selectedFile)
                 }
             }
 
