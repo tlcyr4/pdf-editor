@@ -4,7 +4,7 @@ export default function FileList(props) {
     return (
 
         <div className="workspace-view">
-            <h2>Files To Merge</h2>
+            <h2>Selected Files</h2>
             <ol className="file-list">
                 {props.files.map((file, i) => 
                 <li key={i.toString()} className="file-record">
@@ -18,6 +18,7 @@ export default function FileList(props) {
                 </li>)}
                         
             </ol>
+            <div className="footnote">Use this section to reorder and edit files.</div>
         </div>
     )
 }

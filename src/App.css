@@ -38,7 +38,7 @@ h1.page-title {
 .workspace {
   box-shadow: 0px 0px 10px;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 50% 50%;
   flex-grow: 1;
   background-color: #666;
   gap: 1px;
@@ -70,7 +70,6 @@ img {
 
 .workspace > * {
   background-color: white;
-  /* height: 100%; */
 }
 
 .control-panel div {display: flex;align-items: center;justify-content: center;font-size: xx-large;}
@@ -78,7 +77,6 @@ img {
 .workspace-view {
   display: flex;
   flex-direction: column;
-  overflow: scroll;
   grid-area: 1 / 2 / 3 / 3;
 }
 .workspace-view h2 {
@@ -87,13 +85,16 @@ img {
   margin: 0px;
 }
 
-ol {
+ol.file-list {
   list-style: none;
   flex-grow: 1;
-  /* text-align: center; */
   font-family: 'Open Sans';
   font-size: x-large;
+  overflow-y: scroll;
   padding-inline-end: 40px;
+  margin: 0;
+  padding-block-start: 1em;
+  padding-block-end: 1em;
 }
 
 li {
@@ -107,12 +108,13 @@ li:nth-child(even) {
   background-color: #ddd;
 }
 
-.add-button,.merge-button,.custom-file-upload,.big-btn {
+.add-button,.merge-button,.custom-file-upload,.big-btn,.merge-link {
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: xx-large;
   font-weight: bold;
+  cursor: pointer;
 }
 label.custom-file-upload {
   height: 100%;
@@ -133,6 +135,7 @@ a {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  word-wrap: break-word;
 }
 .add-button,.edit-buttons-container {
   grid-area: 1 / 1 / 2 / 2;
@@ -155,7 +158,6 @@ input[type="file"] {
 }
 
 .active:hover {
-  box-shadow: inset 10px;
   filter: brightness(1.3);
 }
 .inactive {
@@ -172,4 +174,41 @@ input[type="file"] {
 
 .big-btn {
   height: 100%;
+}
+
+.corner-tag {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(200,200,200,.5);
+  padding: 0.1em 0.5em;
+  pointer-events: none;
+}
+
+.big-btn, .merge-button {
+  position: relative;
+}
+
+.merge-link {
+  width: 100%;
+  height: 100%;
+}
+
+.footnote {
+  text-align: center;
+  font-size: x-large;
+  padding-block-end: .67em;
+}
+
+.doc-viewer {
+  overflow: scroll;
+  position: relative;
+}
+
+.doc-nav  {
+  background-color: rgba(200,200,200,.5);
+  z-index: 100;
+  position: fixed;
+  text-align: center;
+  width: 100%;
 }

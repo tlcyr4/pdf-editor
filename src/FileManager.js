@@ -54,16 +54,62 @@ export default class FileManager extends React.Component {
 
     addFile(e) {
         const file = e.target.files[0];
+        // alert("Filename: " + file.name + " , Type: " + file.type);
         e.target.value = "";
-        file.arrayBuffer().then(bytes => {
-        PDFDocument.load(bytes).then(doc => {
-            let pageMask = new Array(doc.getPageCount());
-            this.setState((state, _props) => ({
-                files: state.files.concat([file]),
-                pageMasks : state.pageMasks.concat([pageMask.fill(true)])
-            }));
-        })})
+        switch (file.type) {
+            case "application/pdf":
+                this.loadPDF(file);
+                break;
+            case "image/png":
+            case "image/jpg":
+                this.convertImage(file);
+                break;
         
+            default:
+                alert("Cannot use file type: " + file.type);
+                return;
+                break;
+        }
+        
+        
+    }
+
+    async convertImage(file) {
+        const pdfDoc = await PDFDocument.create();
+        let imageBytes = await file.arrayBuffer();
+        let image;
+        switch (file.type) {
+            case "image/png":
+                image = await pdfDoc.embedPng(imageBytes);
+                break;
+            case "image/jpg":
+                image = await pdfDoc.embedJpg(imageBytes);
+                break;
+            default:
+                alert("Cannot use image type: " + file.type);
+                return;
+                break;
+        }
+        let page = pdfDoc.addPage([image.width, image.height]);
+        page.drawImage(image);
+        let docBytes = await pdfDoc.save();
+        this.loadPDF(new File(
+            [docBytes], file.name, {
+                type:"application/pdf",
+                lastModified: file.lastModified
+            }
+        ));
+    }
+
+    loadPDF(file) {
+        file.arrayBuffer().then(bytes => {
+            PDFDocument.load(bytes).then(doc => {
+                let pageMask = new Array(doc.getPageCount());
+                this.setState((state, _props) => ({
+                    files: state.files.concat([file]),
+                    pageMasks : state.pageMasks.concat([pageMask.fill(true)])
+                }));
+            })});
     }
 
     async merge() {
@@ -205,28 +251,39 @@ export default class FileManager extends React.Component {
         if (this.state.selectedFile === null) {
             return (<div className="workspace-wrapper">
                 <div className="workspace">
-                    <div className="add-button">
-                        <label className="custom-file-upload active">
+                    <div className="add-button active">
+                        <div className="corner-tag">First Step</div>
+                        <label className="custom-file-upload">
                             <input 
                               className="input-btn"
                               type="file" 
                               onChange={this.addFile}
-                              accept=".pdf"
+                              accept=".pdf,.jpg,.png"
                             />
-                            Pick File
+                            Select A  New File
                         </label>
                     </div>
                     {isEmpty ? (
                         <div className="merge-button inactive">
-                            Merge Files
+                            <div className="corner-tag">
+                                Final Step
+                            </div>
+                            Merge All Selected Files
                         </div>) : (
-                        <DownloadLink
-                          label="Merge Files"
-                          filename="merged.pdf"
-                          className="merge-button active"
-                          exportFile={this.merge}
-                          style={{}}
-                        />)}
+                            <div className="merge-button active">
+                                <div className="corner-tag">
+                                    Final Step
+                                </div>
+                                <DownloadLink
+                                label="Merge All Selected Files"
+                                filename="merged.pdf"
+                                className="merge-link"
+                                exportFile={this.merge}
+                                style={{}}
+                                >
+                                </DownloadLink>
+                            </div>
+                        )}
                     <FileList 
                       files={this.state.files}
                       handleDelete={this.handleDelete}
@@ -238,6 +295,11 @@ export default class FileManager extends React.Component {
             </div>
             )
         } else {
+            let pageMask = this.state.pageMasks[this.state.selectedFile];
+            let pageIndex = this.state.pageIndex;
+            let file = this.state.files[this.state.selectedFile];
+            const [adjustedPageNum,adjustedPageCount] = adjusted(pageIndex, pageMask);
+
 
             return (<div className="workspace-wrapper">
             <div className="workspace">
@@ -248,7 +310,11 @@ export default class FileManager extends React.Component {
                 </div>
                 <div className="done-button active big-btn" onClick={this.handleDeselect.bind(this)}>Done</div>
                 <div className="workspace-view">
-                    <Document file={this.state.files[this.state.selectedFile]} >
+        <h2>{file.name} （{adjustedPageNum} / {adjustedPageCount}）</h2>
+                    <Document 
+                        file={this.state.files[this.state.selectedFile]}
+                        className="doc-viewer"    
+                    >
                         <Page pageIndex={this.state.pageIndex}/>
                     </Document>
                 </div>
@@ -256,4 +322,18 @@ export default class FileManager extends React.Component {
             </div>);
         }
     }
+}
+
+function adjusted(pageIndex, pageMask) {
+    let adjustedIndex;
+    let adjustedCount = 0;
+    for (let i = 0; i < pageMask.length; i++) {
+        if (pageMask[i]) {
+            adjustedCount += 1;
+        }
+        if (i === pageIndex) {
+            adjustedIndex = adjustedCount;
+        }
+    }
+    return [adjustedIndex, adjustedCount];
 }
