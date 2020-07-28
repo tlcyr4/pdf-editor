@@ -137,6 +137,9 @@ a {
   justify-content: space-between;
   word-wrap: break-word;
 }
+.file-record div {
+  max-width: 50%;
+}
 .add-button,.edit-buttons-container {
   grid-area: 1 / 1 / 2 / 2;
 }

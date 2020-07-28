@@ -62,13 +62,13 @@ export default class FileManager extends React.Component {
                 break;
             case "image/png":
             case "image/jpg":
+            case "image/jpeg":
                 this.convertImage(file);
                 break;
         
             default:
                 alert("Cannot use file type: " + file.type);
                 return;
-                break;
         }
         
         
@@ -83,12 +83,12 @@ export default class FileManager extends React.Component {
                 image = await pdfDoc.embedPng(imageBytes);
                 break;
             case "image/jpg":
+            case "image/jpeg":
                 image = await pdfDoc.embedJpg(imageBytes);
                 break;
             default:
                 alert("Cannot use image type: " + file.type);
                 return;
-                break;
         }
         let page = pdfDoc.addPage([image.width, image.height]);
         page.drawImage(image);
