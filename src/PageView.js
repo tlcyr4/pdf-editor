@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommandBar, Spinner } from '@fluentui/react';
+import { CommandBar } from '@fluentui/react';
 import { Depths } from '@uifabric/fluent-theme/lib/fluent/FluentDepths';
 import { Document, Page, pdfjs } from 'react-pdf';
 import './PageView.css';
@@ -57,24 +57,19 @@ export default function PageView(props) {
               padding: `16px ${width * .05}px 0px`,
               alignItems:"center"
           }}>
-          <div style={{
-          display:"flex",
-          flexDirection:"row",
-          }}>
-            {pageIndex + 1} / {pageCount}
-          </div>
           <CommandBar
-            items={_commands}
-            style={{
-              display:"flex",
-              flexDirection:"row",
-            }}/>
+            items={[{
+              key: 'pageNum',
+              text: `${pageIndex + 1} / ${pageCount}`,
+              }]}
+            />
+            <CommandBar items={_commands}/>
         </div>
         <div>
             <Document
             className='document'
               file={props.doc.file}
-              loading={<Spinner label="Loading"/>}>
+              >
                 <Page
                 className='page ms-depth-64'
                 pageIndex={pageIndex}
