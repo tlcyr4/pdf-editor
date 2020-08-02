@@ -1,6 +1,6 @@
 import {extname} from 'path';
 import React from 'react';
-import {mergeStyleSets, CommandBar, DetailsList, CheckboxVisibility, IDragDropEvents, ICommandBarItemProps, TeachingBubble} from '@fluentui/react';
+import {mergeStyleSets, CommandBar, DetailsList, CheckboxVisibility, IDragDropEvents, ICommandBarItemProps, TeachingBubble, Icon} from '@fluentui/react';
 import {Depths} from '@uifabric/fluent-theme';
 import { IDocumentItem, IListViewProps }from './ListViewTypes';
 import {IDocument} from './PDFEditorTypes';
@@ -47,6 +47,24 @@ const classNames = mergeStyleSets({
 
 
 const columns = [
+  {
+    key: 'column0',
+    name: '',
+    className: classNames.fileIconCell,
+    iconClassName: classNames.fileIconHeaderIcon,
+    fieldName: 'name',
+    minWidth:16,
+    maxWidth:16,
+    onRender: (item: IDocumentItem) => {
+      return <div style={{
+        height:'100%',
+        width:'100%',
+        display:'flex',
+        flexDirection:'row',
+        alignItems:'center'
+      }}><Icon iconName="GripperBarHorizontal"/></div>;
+    }
+  },
     {
       key: 'column1',
       name: 'File Type',
@@ -65,8 +83,8 @@ const columns = [
       key: 'column2',
       name: '文件名',
       fieldName: 'name',
-      minWidth: 280,
-      maxWidth: 440,
+      minWidth: 210,
+      maxWidth: 350,
       isRowHeader: true,
       isResizable: true,
       isSorted: false,
@@ -74,19 +92,19 @@ const columns = [
       data: 'string',
       isPadded: true,
     },
-    // {
-    //   key: 'column3',
-    //   name: '文件大小',
-    //   fieldName: 'fileSizeRaw',
-    //   minWidth: 70,
-    //   maxWidth: 90,
-    //   isResizable: true,
-    //   isCollapsible: true,
-    //   data: 'number',
-    //   onRender: (item:IDocumentItem) => {
-    //     return <span>{item.fileSize}</span>;
-    //   },
-    // },
+    {
+      key: 'column3',
+      name: '文件大小',
+      fieldName: 'fileSizeRaw',
+      minWidth: 70,
+      maxWidth: 90,
+      isResizable: true,
+      isCollapsible: true,
+      data: 'number',
+      onRender: (item:IDocumentItem) => {
+        return <span>{item.fileSize}</span>;
+      },
+    },
     {
       key: 'column4',
       name: '頁數',

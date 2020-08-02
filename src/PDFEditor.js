@@ -121,6 +121,9 @@ export default class PDFEditor extends React.Component {
     }
 
     deleteDoc() {
+        if (this.state.activeDoc === null) {
+            return;
+        }
         this.setCrumbs([]);
         this.setState((state,_props) => ({
             docs: state.docs.filter(d => d.key !== state.activeDoc.key),
@@ -150,7 +153,7 @@ export default class PDFEditor extends React.Component {
         });
     }
 
-    deletePage(index) {
+    async deletePage(index) {
         // delete page from pdfDoc
         let doc = this.state.activeDoc.pdfDoc;
         if (doc.getPageCount() === 1) {
@@ -160,25 +163,26 @@ export default class PDFEditor extends React.Component {
         }
         doc.removePage(index);
         // propagate change to file
-        doc.save().then(bytes => {
-            this.setState((state,_props) => {
-                let activeDoc = state.activeDoc;
-                let file = new File([bytes], activeDoc.name);
-                let newActiveDoc = {
-                    file:file,
-                    pdfDoc:doc,
-                    key:activeDoc.key,
-                    name:activeDoc.name
-                };
-                return {
-                    activeDoc:newActiveDoc,
-                    docs: state.docs.map(
-                        d => d.key === activeDoc.key ? newActiveDoc : d
-                        )
-                }
-            });
-            this.forceUpdate();
-        })
+        let bytes = await doc.save();
+        doc = await PDFDocument.load(bytes);
+
+        this.setState((state,_props) => {
+            let activeDoc = state.activeDoc;
+            let file = new File([bytes], activeDoc.name);
+            let newActiveDoc = {
+                file:file,
+                pdfDoc:doc,
+                key:activeDoc.key,
+                name:activeDoc.name
+            };
+            return {
+                activeDoc:newActiveDoc,
+                docs: state.docs.map(
+                    d => d.key === activeDoc.key ? newActiveDoc : d
+                    )
+            }
+        });
+        this.forceUpdate();
     }
     async merge() {
         let allPages = [];

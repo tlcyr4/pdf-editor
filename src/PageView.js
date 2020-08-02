@@ -1,5 +1,5 @@
 import React from 'react';
-import { CommandBar } from '@fluentui/react';
+import { CommandBar, Spinner } from '@fluentui/react';
 import { Depths } from '@uifabric/fluent-theme/lib/fluent/FluentDepths';
 import { Document, Page, pdfjs } from 'react-pdf';
 import './PageView.css';
@@ -76,6 +76,7 @@ export default function PageView(props) {
             <Document
             className='document'
               file={props.doc.file}
+              loading={<Spinner/>}
               >
                 <Page
                 className='page ms-depth-64'
