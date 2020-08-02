@@ -52,9 +52,12 @@ export default function PageView(props) {
       <div style={{width: "100%", height: "100%", boxSizing: "border-box"}}>
         <div style={{
           display:"flex",
+          position:"relative",
           flexDirection:"row",
+          height:'fit-content',
           justifyContent:"space-between",
               padding: `16px ${width * .05}px 0px`,
+              // padding: `16px 0px 0px`,
               alignItems:"center"
           }}>
           <CommandBar
@@ -62,8 +65,12 @@ export default function PageView(props) {
               key: 'pageNum',
               text: `${pageIndex + 1} / ${pageCount}`,
               }]}
+            onReduceData={() => undefined}
             />
-            <CommandBar items={_commands}/>
+            <CommandBar
+              items={_commands}
+              onReduceData={() => undefined}
+            />
         </div>
         <div>
             <Document
