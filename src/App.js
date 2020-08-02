@@ -1,33 +1,58 @@
 import React from 'react';
-import './App.css';
-import FileManager from './FileManager';
+import {useState} from 'react';
+import {Breadcrumb, FontWeights } from '@fluentui/react';
+import { Depths } from '@uifabric/fluent-theme/lib/fluent/FluentDepths';
+import { FontSizes } from '@uifabric/fluent-theme/lib/fluent/FluentType';
+import PDFEditor from './PDFEditor';
+
 
 function App() {
+  const baseCrumbs = [
+    { text: "Home", key: 'Home'},
+    { text: "PDF", key: 'PDF'},
+  ];
+  let [childCrumbs, setChildCrumbs] = useState([]);
   return (
-    <div className="App">
+    <div style={{height:"100vh",width:"100vw", display:"flex", flexDirection:"column"}}>
         <SiteNav/>
-        <div className="main">
-            <header className="pdf-nav">
-              <h1 className="page-title">
-                PDF One After Another
-              </h1>
-            </header>
-            <FileManager/>
+        <div
+          style={{
+            padding: "0px 60px",
+            boxShadow: Depths.depth4
+          }}>
+            <Breadcrumb items={[...baseCrumbs,...childCrumbs]}/>
         </div>
+        <PDFEditor
+          setCrumbs={setChildCrumbs}
+        />
     </div>
   );
 }
 
+
+
 function SiteNav(props) {
   return (
-    <nav>
-            <div className="nav-section">
-              <h2>公公</h2>
-            </div>
-            <div className="nav-section">
-              <h2>PDF</h2>
-            </div>
-        </nav>
+    <nav style={{flex:"0 0 auto", padding: "0.67em 60px", display: "flex", flexDirection: "row", justifyContent: "space-between", boxShadow: Depths.depth4}}>
+        <div>
+          <div style={{
+            fontSize:FontSizes.size28,
+            lineHeight: '36px',
+            fontWeight: FontWeights.semibold,
+            color:'#358510'
+            }}>
+              Gong-Gong
+          </div>
+        </div>
+        <div>
+          <div style={{
+            fontSize:FontSizes.size28,
+            lineHeight: '36px',
+            fontWeight: FontWeights.semibold,
+            color:'#358510'
+            }}>PDF</div>
+        </div>
+    </nav>
   );
 }
 
