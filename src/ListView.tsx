@@ -1,6 +1,6 @@
 import {extname} from 'path';
 import React from 'react';
-import {mergeStyleSets, CommandBar, DetailsList, CheckboxVisibility, IDragDropEvents} from '@fluentui/react';
+import {mergeStyleSets, CommandBar, DetailsList, CheckboxVisibility, IDragDropEvents, ICommandBarItemProps, TeachingBubble} from '@fluentui/react';
 import {Depths} from '@uifabric/fluent-theme';
 import { IDocumentItem, IListViewProps }from './ListViewTypes';
 import {IDocument} from './PDFEditorTypes';
@@ -118,7 +118,7 @@ function url(docType:string) {
 
 
 export default function ListView(props:IListViewProps) {
-    // let [dragItemKey,setDragItemKey] = useState(null);
+    let [teachState,setTeachState] = React.useState(0);
     let dragItemKey: string | null = null;
     function onActiveItemChanged(item:IDocumentItem) {
         props.setActiveDoc(item.key);
@@ -135,7 +135,7 @@ export default function ListView(props:IListViewProps) {
             fileType: docType,
             fileSize: `${Math.round(fileSizeRaw / 1000)} KB`,
             fileSizeRaw: fileSizeRaw,
-            pageCount: doc.pdfDoc.getPageCount()
+            pageCount: doc.pdfDoc.getPageCount(),
         }
     }
     let dragDropEvents : IDragDropEvents = {
@@ -157,11 +157,12 @@ export default function ListView(props:IListViewProps) {
       }
     };
 
-    const _commands = [
+    const _commands: ICommandBarItemProps[] = [
       {
           key: 'upload',
           text: '添加文件',
           iconProps: { iconName: 'Add' },
+          id: 'add-button',
           onClick: () => {
             let inputTag = document.getElementById("file-input");
             if (inputTag) {
@@ -200,13 +201,32 @@ export default function ListView(props:IListViewProps) {
             justifyContent:"center",
             paddingTop: "16px"
           }}/>
-        <DetailsList
+        <div id='file-list'><DetailsList
           items={props.documents.map(itemOfDoc)}
           columns={columns}
           checkboxVisibility={CheckboxVisibility.hidden}
           onActiveItemChanged={onActiveItemChanged}
           dragDropEvents={dragDropEvents}
         />
+        </div>
+        {props.teachState === 0 && 
+        <TeachingBubble
+        target='#add-button'
+        headline='開始'
+        hasCloseButton={true}
+        onDismiss={() => props.setTeachState(-1)}
+      >
+          添加文件
+      </TeachingBubble>}
+      {/* {props.teachState === 1 && 
+        <TeachingBubble
+        target='#add-button'
+        headline='Edit Files'
+        hasCloseButton={true}
+        onDismiss={() => props.setTeachState(-1)}
+      >
+          Click a row to edit the file
+      </TeachingBubble>} */}
       </div>
     )
   }

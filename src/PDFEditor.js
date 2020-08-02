@@ -2,6 +2,10 @@ import React from 'react';
 import PageView from './PageView';
 import ListView from './ListView';
 import { PDFDocument } from 'pdf-lib';
+import { TeachingBubble } from '@fluentui/react';
+// import { IconButton } from '@fluentui/react';
+
+
 
 export default class PDFEditor extends React.Component {
     constructor(props) {
@@ -11,8 +15,15 @@ export default class PDFEditor extends React.Component {
             activeDoc : null,
             count: 0,
             pageIndex:null,
+            teachState:0,
+            hasFirstDoc: false,
         }
         this.setCrumbs = props.setCrumbs;
+    }
+    setTeachState(i) {
+        this.setState({
+            teachState:i
+        })
     }
     setPageIndex(i) {
         this.setState({
@@ -57,6 +68,13 @@ export default class PDFEditor extends React.Component {
     async loadPDF(file) {
         let bytes = await file.arrayBuffer();
         let pdfDoc = await PDFDocument.load(bytes);
+
+        if (!this.state.hasFirstDoc) {
+            this.setState({
+                hasFirstDoc:true,
+                teachState: 1,
+            });
+        }
 
         this.setState((state, _props) => ({
             docs: state.docs.concat([{
@@ -137,7 +155,7 @@ export default class PDFEditor extends React.Component {
         let doc = this.state.activeDoc.pdfDoc;
         if (doc.getPageCount() === 1) {
             this.deleteDoc();
-            alert('deleting doc');
+            // alert('deleting doc');
             return;
         }
         doc.removePage(index);
@@ -182,7 +200,7 @@ export default class PDFEditor extends React.Component {
 
         let a = window.document.createElement('a');
         a.href = window.URL.createObjectURL(new Blob([pdfBytes], {type: 'text/csv'}));
-        a.download = 'test.pdf';
+        a.download = 'merged.pdf';
 
         // Append anchor to body.
         document.body.appendChild(a);
@@ -193,7 +211,8 @@ export default class PDFEditor extends React.Component {
     }
 
     render() {
-        let {docs,activeDoc} = this.state;
+        let {docs,activeDoc,teachState} = this.state;
+        // const helpIcon = {iconName: 'Help'};
         return (
         <main style={{display: 'grid',gridTemplateColumns: '50% 50%', flex: "1 1 auto"}}>
             <ListView
@@ -203,6 +222,8 @@ export default class PDFEditor extends React.Component {
               deleteDoc={this.deleteDoc.bind(this)}
               merge={this.merge.bind(this)}
               insertAt={this.insertAt.bind(this)}
+              setTeachState={this.setTeachState.bind(this)}
+              teachState={this.state.teachState}
             />
             <PageView
               doc={activeDoc}
@@ -211,6 +232,16 @@ export default class PDFEditor extends React.Component {
               setPageIndex={this.setPageIndex.bind(this)}
               pageIndex={this.state.pageIndex}
             />
+            {/* <IconButton
+              iconProps={helpIcon}
+              title={'User Manual'}
+              disabled={false}
+              checked={true}
+              style={{
+                  position:"absolute",
+                  margin: `22px 60px`
+              }}
+            /> */}
         </main>
         )
     }

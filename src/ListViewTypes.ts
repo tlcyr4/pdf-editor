@@ -19,4 +19,6 @@ export interface IDocumentItem {
     addFiles: ((event: React.ChangeEvent<HTMLInputElement>) => void) | undefined;
     insertAt: (srcKey: string,dstKey:string) => void;
     documents: any[];
+    teachState:number;
+    setTeachState: (state:number) => void;
   }
