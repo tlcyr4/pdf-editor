@@ -2,8 +2,6 @@ import React from 'react';
 import PageView from './PageView';
 import ListView from './ListView';
 import { PDFDocument } from 'pdf-lib';
-import { TeachingBubble } from '@fluentui/react';
-// import { IconButton } from '@fluentui/react';
 
 
 
@@ -215,7 +213,7 @@ export default class PDFEditor extends React.Component {
     }
 
     render() {
-        let {docs,activeDoc,teachState} = this.state;
+        let {docs,activeDoc} = this.state;
         // const helpIcon = {iconName: 'Help'};
         return (
         <main style={{display: 'grid',gridTemplateColumns: '50% 50%', flex: "1 1 auto"}}>

@@ -136,7 +136,6 @@ function url(docType:string) {
 
 
 export default function ListView(props:IListViewProps) {
-    let [teachState,setTeachState] = React.useState(0);
     let dragItemKey: string | null = null;
     function onActiveItemChanged(item:IDocumentItem) {
         props.setActiveDoc(item.key);
